@@ -54,13 +54,8 @@ public class MainActivity extends Activity {
             public void onPageSelected(int position) {
                 if (position == 1) {
                     partyFragment.startCycling();
-                    //motionFragment.stopCycling();
-                } else if (position == 2) {
-                    partyFragment.stopCycling();
-                    //motionFragment.startCycling();
                 } else {
                     partyFragment.stopCycling();
-                    //motionFragment.stopCycling();
                 }
             }
 
@@ -138,15 +133,5 @@ public class MainActivity extends Activity {
             mView = (MotionLightView) inflater.inflate(R.layout.motion_light, container, false);
             return mView;
         }
-
-        /*
-        public void startCycling() {
-            mView.startCycling();
-        }
-
-        public void stopCycling() {
-            mView.stopCycling();
-        }
-        */
     }
 }

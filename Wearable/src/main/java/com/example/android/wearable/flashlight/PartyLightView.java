@@ -16,7 +16,6 @@
 
 package com.example.android.wearable.flashlight;
 
-import android.animation.ArgbEvaluator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -45,8 +44,6 @@ public class PartyLightView extends View {
      * Value b/t 0 and 1.
      */
     private float mProgress;
-
-    private ArgbEvaluator mEvaluator;
 
     private int mCurrentColor;
 
@@ -77,7 +74,6 @@ public class PartyLightView extends View {
     }
 
     private void init() {
-        mEvaluator = new ArgbEvaluator();
         mHandler = new Handler() {
 
             @Override
@@ -100,17 +96,15 @@ public class PartyLightView extends View {
     }
 
     private int getColor(float fraction, int colorStart, int colorEnd) {
-        int startInt = colorStart;
-        int startA = (startInt >> 24) & 0xff;
-        int startR = (startInt >> 16) & 0xff;
-        int startG = (startInt >> 8) & 0xff;
-        int startB = startInt & 0xff;
+        int startA = (colorStart >> 24) & 0xff;
+        int startR = (colorStart >> 16) & 0xff;
+        int startG = (colorStart >> 8) & 0xff;
+        int startB = colorStart & 0xff;
 
-        int endInt = colorEnd;
-        int endA = (endInt >> 24) & 0xff;
-        int endR = (endInt >> 16) & 0xff;
-        int endG = (endInt >> 8) & 0xff;
-        int endB = endInt & 0xff;
+        int endA = (colorEnd >> 24) & 0xff;
+        int endR = (colorEnd >> 16) & 0xff;
+        int endG = (colorEnd >> 8) & 0xff;
+        int endB = colorEnd & 0xff;
 
         return (startA + (int)(fraction * (endA - startA))) << 24 |
                 (startR + (int)(fraction * (endR - startR))) << 16 |

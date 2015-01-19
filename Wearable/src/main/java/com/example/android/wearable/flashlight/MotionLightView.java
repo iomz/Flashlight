@@ -35,26 +35,14 @@ public class MotionLightView extends View implements SensorEventListener {
     private void init() {
         Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        /*
-        mEvaluator = new ArgbEvaluator();
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                mCurrentColor = getColor(x, y, z);
-                postInvalidate();
-                mHandler.sendEmptyMessageDelayed(0, 100);
-            }
-        };
-        */
     }
 
     @Override
     public void onSensorChanged(SensorEvent e) {
         if (e.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float GAIN = 0.9f;
-            x = (int)(12.8*(x * GAIN + e.values[0] * (1 - GAIN))+128);
-            y = (int)(12.8*(y * GAIN + e.values[1] * (1 - GAIN))+128);
-            z = (int)(12.8*(z * GAIN + e.values[2] * (1 - GAIN))+128);
+            x = (int)(12.8 * e.values[0] + 128);
+            y = (int)(12.8 * e.values[1] + 128);
+            z = (int)(12.8 * e.values[2] + 128);
         }
         mCurrentColor = getColor(x, y, z);
         postInvalidate();
@@ -71,18 +59,9 @@ public class MotionLightView extends View implements SensorEventListener {
         super.onDraw(canvas);
     }
 
-    // Translate xyz to RGB
+    // Translate xyz to RGB at alpha 200
     private int getColor(int x, int y, int z) {
-        return Color.argb(50, x, y, z);
+        return Color.argb(200, x, y, z);
     }
 
-    /*
-    public void startCycling() {
-        mHandler.sendEmptyMessage(0);
-    }
-
-    public void stopCycling() {
-        mHandler.removeMessages(0);
-    }
-    */
 }

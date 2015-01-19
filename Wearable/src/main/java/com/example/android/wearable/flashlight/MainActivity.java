@@ -15,7 +15,7 @@
  */
 
 /**
- * Created by ichiro, wataru, iomz on 1/19/15.
+ * Modified by ichiro, wataru, iomz on 1/19/15.
  */
 
 package com.example.android.wearable.flashlight;
@@ -23,10 +23,6 @@ package com.example.android.wearable.flashlight;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -37,30 +33,19 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-/**
- * Let there be light.
- */
-public class MainActivity extends Activity 
-        implements SensorEventListener {
-
-    private ViewPager mViewPager;
-    private SensorManager mSensorManager;
-    private final float GAIN = 0.9f;
-    private int x, y, z;
-    private PartyLightFragment partyFragment;
-    private MotionLightFragment motionFragment;
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
         final LightFragmentAdapter adapter = new LightFragmentAdapter(getFragmentManager());
         adapter.addFragment(new WhiteLightFragment());
-        partyFragment = new PartyLightFragment();
+        final PartyLightFragment partyFragment = new PartyLightFragment();
         adapter.addFragment(partyFragment);
-        motionFragment = new MotionLightFragment();
+        final MotionLightFragment motionFragment = new MotionLightFragment();
         adapter.addFragment(motionFragment);
         mViewPager.setAdapter(adapter);
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -69,8 +54,13 @@ public class MainActivity extends Activity
             public void onPageSelected(int position) {
                 if (position == 1) {
                     partyFragment.startCycling();
+                    //motionFragment.stopCycling();
+                } else if (position == 2) {
+                    partyFragment.stopCycling();
+                    //motionFragment.startCycling();
                 } else {
                     partyFragment.stopCycling();
+                    //motionFragment.stopCycling();
                 }
             }
 
@@ -82,7 +72,6 @@ public class MainActivity extends Activity
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
 
     static class LightFragmentAdapter extends FragmentPagerAdapter {
@@ -90,7 +79,7 @@ public class MainActivity extends Activity
 
         public LightFragmentAdapter(FragmentManager fm) {
             super(fm);
-            mFragments = new ArrayList<Fragment>();
+            mFragments = new ArrayList<>();
         }
 
         @Override
@@ -110,26 +99,11 @@ public class MainActivity extends Activity
         }
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent e) {
-        if (e.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            x = (int)((x * GAIN + e.values[0] * (1 - GAIN)))%255;
-            y = (int)((y * GAIN + e.values[1] * (1 - GAIN)))%255;
-            z = (int)((z * GAIN + e.values[2] * (1 - GAIN)))%255;
-            motionFragment.updateColor(x, y, z);
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        ;
-    }
-
     public static class WhiteLightFragment extends Fragment {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             return inflater.inflate(R.layout.white_light, container, false);
         }
     }
@@ -140,7 +114,7 @@ public class MainActivity extends Activity
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             mView = (PartyLightView) inflater.inflate(R.layout.party_light, container, false);
             return mView;
         }
@@ -165,9 +139,14 @@ public class MainActivity extends Activity
             return mView;
         }
 
-        public void updateColor(int x, int y, int z) {
-            mView.updateColor(x, y, z);
+        /*
+        public void startCycling() {
+            mView.startCycling();
         }
-    }
 
+        public void stopCycling() {
+            mView.stopCycling();
+        }
+        */
+    }
 }

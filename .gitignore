@@ -1,5 +1,6 @@
 debug
 .idea
+.DS_Store
 
 :a!
 # Built application files

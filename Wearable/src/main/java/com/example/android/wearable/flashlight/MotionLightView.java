@@ -13,6 +13,7 @@ import android.view.View;
 
 /**
  * Flashing motion lights!
+ * with the configuration menu for the variables to floor/ceil the xyz to map rgb
  */
 public class MotionLightView extends View implements SensorEventListener {
 

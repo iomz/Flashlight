@@ -1,4 +1,4 @@
-Android Flashlight Sample
+Android Flashlight Sample with Motionlight feature
 ===================================
 
 Wearable activity that uses your wearable screen as a flashlight. There is also
